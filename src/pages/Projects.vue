@@ -8,17 +8,23 @@ export default {
         return {
             projects: [],
             loading: true,
+
+            paginator: [],
         }
     },
 
     methods : {
 
-        getApi(){
-            axios.get(store.apiUrl + 'projects')
+        getApi(url){
+            this.loading = true;
+
+            axios.get(url)
             .then(response => {
 
-                this.projects = response.data.projects
-                console.log(this.projects);
+                this.projects = response.data.projects;
+
+                this.paginator = response.data.projects.links;
+                console.log(this.paginator);
                 this.loading = false;
             })
             .catch(error => {
@@ -29,7 +35,7 @@ export default {
     },
 
     mounted(){
-        this.getApi()
+        this.getApi(store.apiUrl + 'projects')
     }
 }
 </script>
@@ -44,7 +50,7 @@ export default {
 
             <div v-if="loading == false">
                 <ul>
-                    <li v-for="(prj, i) in projects" :key="i">
+                    <li v-for="(prj, i) in projects.data" :key="i">
                         <strong>{{ prj.id }}</strong>{{ prj.name }}
                     </li>
                 </ul>
@@ -52,6 +58,19 @@ export default {
 
             <div v-else id="loader-container">
                 <span class="loader"></span>
+            </div>
+
+            <div id="paginator">
+
+                <button
+                    v-for="link in paginator"
+                    v-html="link.label"
+                    :disabled="link.active || !link.url"
+                    @click="getApi(link.url)"
+                >
+                    
+                </button>
+
             </div>
         </div>
     </div>
@@ -120,4 +139,22 @@ export default {
                 transform: rotate(360deg);
             }
         } 
+
+    #paginator{
+        margin: 50px 30%;
+        display: flex;
+        justify-content: center;
+
+        button{
+            margin: 0 3px;
+            padding: 2px 5px;
+            border: 1px solid black;
+            border-radius: 5px;
+            background-color: transparent;
+            
+            &:hover{
+                cursor: pointer;
+            }
+        }
+    }
 </style>
