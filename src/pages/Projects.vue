@@ -3,7 +3,7 @@ import { store } from '@/store/store';
 import axios from 'axios';
 
 export default {
-
+    name: 'Projects',
     data () {
         return {
             projects: [],
@@ -61,6 +61,7 @@ export default {
                             v-for="link in paginator"
                             v-html="link.label"
                             :disabled="link.active || !link.url"
+                            :class="link.active ? 'active' : ' '"
                             @click="getApi(link.url)"
                         >
                         </button>
@@ -128,14 +129,21 @@ export default {
 
                     button{
                         margin: 0 3px;
-                        padding: 2px 5px;
+                        padding: 2px 7px;
                         border: 1px solid black;
                         border-radius: 5px;
-                        background-color: transparent;
+                        background-color: black;
+                        color: white;
+                        font-size: 15px;
                         
                         &:hover{
                             cursor: pointer;
                         }
+                    }
+
+                    .active{
+                        color: rgb(158, 55, 255);
+                        font-weight: 700;
                     }
                 }
 
