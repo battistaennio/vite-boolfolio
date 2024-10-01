@@ -56,6 +56,10 @@ header{
       }
     }
   }
+
+  .router-link-active {
+    color: blueviolet;
+  }
 }
 
 </style>
