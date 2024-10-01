@@ -46,31 +46,30 @@ export default {
         <h1>Progetti</h1>
 
         <div id="prj-container">
-            <h3>Lista dei progetti:</h3>
+            <div id="list">
+                <h3>Lista dei progetti:</h3>
 
-            <div v-if="loading == false">
-                <ul>
-                    <li v-for="(prj, i) in projects.data" :key="i">
-                        <strong>{{ prj.id }}</strong>{{ prj.name }}
-                    </li>
-                </ul>
-            </div>
+                <div v-if="loading == false">
+                    <ul>
+                        <li v-for="(prj, i) in projects.data" :key="i">
+                            <strong>{{ prj.id }}</strong>{{ prj.name }}
+                        </li>
+                    </ul>
+                </div>
 
-            <div v-else id="loader-container">
-                <span class="loader"></span>
+                <div v-else id="loader-container">
+                    <span class="loader"></span>
+                </div>
             </div>
 
             <div id="paginator">
-
                 <button
                     v-for="link in paginator"
                     v-html="link.label"
                     :disabled="link.active || !link.url"
                     @click="getApi(link.url)"
                 >
-                    
                 </button>
-
             </div>
         </div>
     </div>
@@ -87,26 +86,31 @@ export default {
         margin: 10px auto;
         width: 50%;
         height: 70vh;
-        overflow-y: auto;
         border: 2px solid black;
         border-radius: 10px;
         padding: 10px;
 
-        ul{
-            margin: 10px 20px;
 
-            li{
-                list-style: none;
-                margin: 10px 0;
-                padding-bottom: 3px;
-                border-bottom: 1px solid #151515;
+        #list{
+            height: 80%;
+            padding: 10px 20px;
+            overflow-y: auto;
+        
+            ul{
 
-                &:last-child{
-                    border-bottom: none;
-                }
+                li{
+                    list-style: none;
+                    margin: 10px 0;
+                    padding-bottom: 3px;
+                    border-bottom: 1px solid #151515;
 
-                strong{
-                    margin-right: 10px;
+                    &:last-child{
+                        border-bottom: none;
+                    }
+
+                    strong{
+                        margin-right: 10px;
+                    }
                 }
             }
         }
@@ -141,9 +145,10 @@ export default {
         } 
 
     #paginator{
-        margin: 50px 30%;
+        height: 20%;
         display: flex;
         justify-content: center;
+        align-items: flex-end;
 
         button{
             margin: 0 3px;
