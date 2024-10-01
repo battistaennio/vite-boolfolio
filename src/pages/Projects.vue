@@ -46,15 +46,25 @@ export default {
         <h1>Progetti</h1>
 
         <div id="prj-container">
-            <div id="list">
+            <div id="list-container">
                 <h3>Lista dei progetti:</h3>
 
-                <div v-if="loading == false">
+                <div id="list" v-if="loading == false">
                     <ul>
                         <li v-for="(prj, i) in projects.data" :key="i">
                             <strong>{{ prj.id }}</strong>{{ prj.name }}
                         </li>
                     </ul>
+
+                    <div id="paginator">
+                        <button
+                            v-for="link in paginator"
+                            v-html="link.label"
+                            :disabled="link.active || !link.url"
+                            @click="getApi(link.url)"
+                        >
+                        </button>
+                    </div>
                 </div>
 
                 <div v-else id="loader-container">
@@ -62,15 +72,6 @@ export default {
                 </div>
             </div>
 
-            <div id="paginator">
-                <button
-                    v-for="link in paginator"
-                    v-html="link.label"
-                    :disabled="link.active || !link.url"
-                    @click="getApi(link.url)"
-                >
-                </button>
-            </div>
         </div>
     </div>
 </template>
@@ -91,27 +92,53 @@ export default {
         padding: 10px;
 
 
-        #list{
-            height: 80%;
+        #list-container{
+            height: 100%;
             padding: 10px 20px;
-            overflow-y: auto;
+
+            #list{
+                height: 90%;
         
-            ul{
+                ul{
+                    height: 80%;
+                    overflow-y: auto;
 
-                li{
-                    list-style: none;
-                    margin: 10px 0;
-                    padding-bottom: 3px;
-                    border-bottom: 1px solid #151515;
 
-                    &:last-child{
-                        border-bottom: none;
-                    }
+                    li{
+                        list-style: none;
+                        margin: 10px 0;
+                        padding-bottom: 3px;
+                        border-bottom: 1px solid #151515;
 
-                    strong{
-                        margin-right: 10px;
+                        &:last-child{
+                            border-bottom: none;
+                        }
+
+                        strong{
+                            margin-right: 10px;
+                        }
                     }
                 }
+
+                #paginator{
+                    height: 20%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: flex-end;
+
+                    button{
+                        margin: 0 3px;
+                        padding: 2px 5px;
+                        border: 1px solid black;
+                        border-radius: 5px;
+                        background-color: transparent;
+                        
+                        &:hover{
+                            cursor: pointer;
+                        }
+                    }
+                }
+
             }
         }
     }
@@ -120,7 +147,7 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
-        min-height: 60vh;
+        height: 100%;
 
     }
 
@@ -144,22 +171,4 @@ export default {
             }
         } 
 
-    #paginator{
-        height: 20%;
-        display: flex;
-        justify-content: center;
-        align-items: flex-end;
-
-        button{
-            margin: 0 3px;
-            padding: 2px 5px;
-            border: 1px solid black;
-            border-radius: 5px;
-            background-color: transparent;
-            
-            &:hover{
-                cursor: pointer;
-            }
-        }
-    }
 </style>
