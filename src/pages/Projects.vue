@@ -19,7 +19,7 @@ export default {
 
                 this.projects = response.data.projects
                 console.log(this.projects);
-                this.loading = false
+                this.loading = false;
             })
             .catch(error => {
 
@@ -35,31 +35,40 @@ export default {
 </script>
 
 <template>
-  <h1>Progetti</h1>
 
-  <div id="prj-container">
-    <h3>Lista dei progetti:</h3>
+    <div class="container">
+        <h1>Progetti</h1>
 
-    <div v-if="loading == false">
-        <ul>
-            <li v-for="(prj, i) in projects" :key="i">
-                <strong>{{ prj.id }}</strong>{{ prj.name }}
-            </li>
-        </ul>
+        <div id="prj-container">
+            <h3>Lista dei progetti:</h3>
+
+            <div v-if="loading == false">
+                <ul>
+                    <li v-for="(prj, i) in projects" :key="i">
+                        <strong>{{ prj.id }}</strong>{{ prj.name }}
+                    </li>
+                </ul>
+            </div>
+
+            <div v-else id="loader-container">
+                <span class="loader"></span>
+            </div>
+        </div>
     </div>
-
-    <div v-else id="loader-container">
-        <span class="loader"></span>
-    </div>
-
-  </div>
 </template>
 
 <style lang="scss" scoped>
+
+    h1{
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
     #prj-container{
         margin: 10px auto;
         width: 50%;
-        min-height: 250px;
+        height: 70vh;
+        overflow-y: auto;
         border: 2px solid black;
         border-radius: 10px;
         padding: 10px;
@@ -70,6 +79,7 @@ export default {
             li{
                 list-style: none;
                 margin: 10px 0;
+                padding-bottom: 3px;
                 border-bottom: 1px solid #151515;
 
                 &:last-child{
@@ -87,7 +97,7 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
-        min-height: 250px;
+        min-height: 60vh;
 
     }
 
