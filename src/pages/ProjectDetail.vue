@@ -67,7 +67,7 @@ export default {
             <p><strong>Progetto di tipo: </strong>{{ project.type ? project.type.name : 'tipo non disponibile' }}</p>
             <p><strong>Tecnologia utilizzata: </strong>{{ project.technologies }}</p>
 
-            <router-link :to="{name: 'projects'}">Torna alla lista dei progetti</router-link>
+            <router-link class="link" :to="{name: 'projects'}">< Torna alla lista dei progetti</router-link>
         </div>
 
         <div v-else id="loader-container">

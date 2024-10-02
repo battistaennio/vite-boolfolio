@@ -72,7 +72,7 @@ export default {
                                 <ul>
                                     <li v-for="(prj, i) in projects.data" :key="i">
                                         <strong>{{ prj.id }}</strong>
-                                        <router-link :to="{ name: 'projectdetail', params: { slug: prj.slug} }">{{ prj.name }}</router-link>
+                                        <router-link class="link" :to="{ name: 'projectdetail', params: { slug: prj.slug} }">{{ prj.name }}</router-link>
                                     </li>
                                 </ul>
 
@@ -158,15 +158,6 @@ export default {
                         strong{
                             margin-right: 10px;
                         }
-
-                        a{
-                            color: black;
-                            text-decoration: none;
-
-                            &:hover{
-                                text-decoration: underline;
-                            }
-                        }
                     }
                 }
 
@@ -187,6 +178,7 @@ export default {
                         
                         &:hover{
                             cursor: pointer;
+                            color: rgb(226, 194, 255);
                         }
                     }
 

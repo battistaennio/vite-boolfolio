@@ -26,3 +26,13 @@ h1 {
     border-radius: 10px;
     padding: 10px;
 }
+
+.link {
+    color: black;
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: underline;
+        color: blueviolet;
+    }
+}
