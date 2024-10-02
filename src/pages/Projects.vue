@@ -6,8 +6,11 @@ export default {
     name: 'Projects',
     data () {
         return {
-            projects: [],
             loading: true,
+
+            projects: [],
+            technologies: [],
+            types: [],
 
             paginator: [],
         }
@@ -15,17 +18,28 @@ export default {
 
     methods : {
 
-        getApi(url){
+        getApi(url, type = 'projects'){
             this.loading = true;
 
             axios.get(url)
             .then(response => {
 
-                this.projects = response.data.projects;
+                switch(type){
+                    case 'techs':
+                        this.technologies = response.data.techs;
+                    break
 
-                this.paginator = response.data.projects.links;
-                console.log(this.paginator);
-                this.loading = false;
+                    case 'types':
+                        this.types = response.data.types;
+                    break
+
+                    case 'projects':
+                        this.projects = response.data.projects;
+                        this.paginator = response.data.projects.links;
+                        this.loading = false;
+                    break
+                }
+
             })
             .catch(error => {
 
@@ -35,7 +49,9 @@ export default {
     },
 
     mounted(){
-        this.getApi(store.apiUrl + 'projects')
+        this.getApi(store.apiUrl + 'technologies',  'techs')
+        this.getApi(store.apiUrl + 'types',  'types')
+        this.getApi(store.apiUrl + 'projects', 'projects')
     }
 }
 </script>
@@ -45,53 +61,77 @@ export default {
     <div class="container">
         <h1>Progetti</h1>
 
-        <div id="prj-container">
-            <div id="list-container">
-                <h3>Lista dei progetti:</h3>
+            <div class="wrapper">
+                <div id="is-loaded" v-if="loading == false">
 
-                <div id="list" v-if="loading == false">
-                    <ul>
-                        <li v-for="(prj, i) in projects.data" :key="i">
-                            <strong>{{ prj.id }}</strong>{{ prj.name }}
-                        </li>
-                    </ul>
+                    <div id="prj-container">
+                        <div id="list-container">
+                            <h3>Lista dei progetti:</h3>
 
-                    <div id="paginator">
-                        <button
-                            v-for="link in paginator"
-                            v-html="link.label"
-                            :disabled="link.active || !link.url"
-                            :class="link.active ? 'active' : ' '"
-                            @click="getApi(link.url)"
-                        >
-                        </button>
+                            <div id="list">
+                                <ul>
+                                    <li v-for="(prj, i) in projects.data" :key="i">
+                                        <strong>{{ prj.id }}</strong>
+                                        <router-link :to="{ name: 'projectdetail', params: { slug: prj.slug} }">{{ prj.name }}</router-link>
+                                    </li>
+                                </ul>
+
+                                <div id="paginator">
+                                    <button
+                                        v-for="link in paginator"
+                                        v-html="link.label"
+                                        :disabled="link.active || !link.url"
+                                        :class="link.active ? 'active' : ' '"
+                                        @click="getApi(link.url, 'projects')"
+                                    >
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
+
+                    <div id="techs-types-container">
+
+                        <h4>Tecnologie:</h4>
+                        <div class="box">
+                            <span v-for="tech in technologies">{{tech.name}}</span>
+                        </div>
+
+                        <h4>Tipi:</h4>
+                        <div class="box">
+                            <span v-for="type in types">{{type.name}}</span>
+                        </div>
+
+                    </div>
+
                 </div>
 
                 <div v-else id="loader-container">
                     <span class="loader"></span>
                 </div>
+
             </div>
 
-        </div>
+            
+
+
+
+
     </div>
 </template>
 
 <style lang="scss" scoped>
 
-    h1{
-        text-align: center;
-        margin-bottom: 30px;
+    #is-loaded{
+        display: flex;
+        justify-content: space-between;
+        height: 100%;
     }
 
     #prj-container{
-        margin: 10px auto;
-        width: 50%;
-        height: 70vh;
-        border: 2px solid black;
-        border-radius: 10px;
-        padding: 10px;
 
+        width: 70%;
 
         #list-container{
             height: 100%;
@@ -117,6 +157,15 @@ export default {
 
                         strong{
                             margin-right: 10px;
+                        }
+
+                        a{
+                            color: black;
+                            text-decoration: none;
+
+                            &:hover{
+                                text-decoration: underline;
+                            }
                         }
                     }
                 }
@@ -151,24 +200,51 @@ export default {
         }
     }
 
+    #techs-types-container{
+        min-height: 200px;
+        width: 30%;
+
+        h4{
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .box{
+            margin: 20px 0 60px 0;
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+
+            span{
+                background-color: #000;
+                color: white;
+                padding: 3px 5px;
+                border-radius: 5px;
+                margin: 5px 10px;
+            }
+        }
+    }
+
+
     #loader-container{
+
+        margin: 0 auto;
         display: flex;
         justify-content: center;
         align-items: center;
         height: 100%;
 
-    }
-
-    .loader {
-        width: 48px;
-        height: 48px;
-        border-radius: 50%;
-        display: inline-block;
-        border-top: 3px solid #000;
-        border-right: 3px solid transparent;
-        box-sizing: border-box;
-        animation: rotation 1s linear infinite;
-    }
+        .loader {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: inline-block;
+            border-top: 3px solid #000;
+            border-right: 3px solid transparent;
+            box-sizing: border-box;
+            animation: rotation 1s linear infinite;
+        }
 
         @keyframes rotation {
             0% {
@@ -178,5 +254,5 @@ export default {
                 transform: rotate(360deg);
             }
         } 
-
+    }
 </style>

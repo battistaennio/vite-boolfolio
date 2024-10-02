@@ -9,6 +9,20 @@ body {
     font-size: 18px;
 }
 
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
 .container {
     margin: 30px 2.5%;
+}
+
+.wrapper {
+    margin: 10px auto;
+    width: 75%;
+    height: 70vh;
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 10px;
 }
