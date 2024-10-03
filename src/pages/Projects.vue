@@ -1,9 +1,15 @@
 <script>
+import Loader from '@/components/Loader.vue';
 import { store } from '@/store/store';
 import axios from 'axios';
 
 export default {
     name: 'Projects',
+
+    components: {
+        Loader
+    },
+
     data () {
         return {
             loading: true,
@@ -93,24 +99,25 @@ export default {
 
                     <div id="techs-types-container">
 
-                        <h4>Tecnologie:</h4>
-                        <div class="box">
-                            <span v-for="tech in technologies">{{tech.name}}</span>
+                        <div id="top">
+                            <h4>Tecnologie</h4>
+                            <div class="box">
+                                <span v-for="tech in technologies">{{tech.name}}</span>
+                            </div>
                         </div>
 
-                        <h4>Tipi:</h4>
-                        <div class="box">
-                            <span v-for="type in types">{{type.name}}</span>
+                        <div id="bottom">
+                            <h4>Tipi:</h4>
+                            <div class="box">
+                                <span v-for="type in types">{{type.name}}</span>
+                            </div>
                         </div>
 
                     </div>
 
                 </div>
 
-                <div v-else id="loader-container">
-                    <span class="loader"></span>
-                </div>
-
+                <Loader v-else />
             </div>
 
             
@@ -193,8 +200,14 @@ export default {
     }
 
     #techs-types-container{
-        min-height: 200px;
+        margin: auto 0;
         width: 30%;
+        height: 100%;
+        overflow-y: auto;
+
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
 
         h4{
             text-align: center;

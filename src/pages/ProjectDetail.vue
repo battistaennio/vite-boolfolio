@@ -1,9 +1,14 @@
 <script>
+import Loader from '@/components/Loader.vue';
 import { store } from '@/store/store';
 import axios from 'axios';
 
 export default {
   name: 'ProjectDetail',
+
+  components: {
+    Loader
+  },
 
   data(){
     return{
@@ -67,12 +72,12 @@ export default {
             <p><strong>Progetto di tipo: </strong>{{ project.type ? project.type.name : 'tipo non disponibile' }}</p>
             <p><strong>Tecnologia utilizzata: </strong>{{ project.technologies }}</p>
 
-            <router-link class="link" :to="{name: 'projects'}">< Torna alla lista dei progetti</router-link>
+            <router-link class="link" :to="{name: 'projects'}"><i class="fa-solid fa-arrow-left-long"></i>
+                Torna alla lista dei progetti</router-link>
         </div>
 
-        <div v-else id="loader-container">
-            <span class="loader"></span>
-        </div>
+        <Loader v-else/>
+
     </div>
 
 
